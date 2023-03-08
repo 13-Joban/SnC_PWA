@@ -1,8 +1,15 @@
 <ion-header>
-	<ion-toolbar color="primary">
-		<ion-title class="title"> Create Notes </ion-title>
+	<ion-toolbar color="primary" >
+	  <ion-title class="title">Create Notes</ion-title>
+	  <ion-buttons slot="end">
+		<ion-button (click)="viewAllFiles()">
+		  <ion-icon name="document-text-outline"></ion-icon>
+		  <span>View All</span>
+		</ion-button>
+	  </ion-buttons>
 	</ion-toolbar>
-</ion-header>
+  </ion-header>
+  
 
 <ion-content>
 	<div class="preview-container">
