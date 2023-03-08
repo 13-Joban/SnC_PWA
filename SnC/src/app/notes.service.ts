@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface Note {
+  imageUrl: any;
   title: string;
   notes: string;
   dataUrl: string;
@@ -23,10 +24,38 @@ export class NotesService {
     return this.notesCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Note;
-        console.log(data)
         const id = a.payload.doc.id;
-        return { id, ...data };
+        
+        // check if dataUrl or imageUrl is present and use dataUrl if present, otherwise convert imageUrl to dataUrl
+        if (data.dataUrl) {
+          return { id, ...data };
+        } else if (data.imageUrl) {
+          const dataUrl = `data:${this.getMimeTypeFromUrl(data.imageUrl)};base64,${this.getBase64FromUrl(data.imageUrl)}`;
+          return { id, ...data, dataUrl };
+        } else {
+          return { id, ...data };
+        }
       }))
     );
+  }
+
+  // helper function to get MIME type from URL
+  getMimeTypeFromUrl(url: string): string {
+    const matches = url.match(/^data:(.+);base64,/);
+    if (matches && matches.length > 1) {
+      return matches[1];
+    } else {
+      return '';
+    }
+  }
+
+  // helper function to get Base64-encoded string from URL
+  getBase64FromUrl(url: string): string {
+    const matches = url.match(/^data:.+;base64,(.*)$/);
+    if (matches && matches.length > 1) {
+      return matches[1];
+    } else {
+      return '';
+    }
   }
 }
