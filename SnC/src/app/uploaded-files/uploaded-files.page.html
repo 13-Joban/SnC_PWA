@@ -15,10 +15,11 @@
         <p>{{ note.notes }}</p>
       </ion-label>
       <ion-thumbnail slot="start">
-        <img [src]="note.dataUrl" />
+        <img [src]="note.dataUrl" alt="File" />
       </ion-thumbnail>
       <ion-button slot="end" (click)="viewFile(note)">View</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
+
 
